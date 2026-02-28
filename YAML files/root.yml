@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Root stack for nested VPC and Security setup
+
+Parameters:
+
+  InputVpcCidr:
+    Type: String
+    Default: 10.0.0.0/16
+    Description: Enter VPC CIDR
+
+  InputPubSubnet1:
+    Type: String
+    Default: 10.0.1.0/24
+
+  InputPubSubnet2:
+    Type: String
+    Default: 10.0.2.0/24
+
+  InputPvtSubnet1:
+    Type: String
+    Default: 10.0.3.0/24
+
+  InputPvtSubnet2:
+    Type: String
+    Default: 10.0.4.0/24
+
+  InputHttpPort:
+    Type: Number
+    Default: 80
+
+  InputSshPort:
+    Type: Number
+    Default: 22
+
+
+Resources:
+
+  NetworkStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: https://my-bucket-child-stacks-01.s3.ap-south-1.amazonaws.com/network-stack.yml
+      Parameters:
+        VpcCidrBlock: !Ref InputVpcCidr
+        PubSubnet1Cidr: !Ref InputPubSubnet1
+        PubSubnet2Cidr: !Ref InputPubSubnet2
+        PvtSubnet1Cidr: !Ref InputPvtSubnet1
+        PvtSubnet2Cidr: !Ref InputPvtSubnet2
+
+  SecurityStack:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: NetworkStack
+    Properties:
+      TemplateURL: https://my-bucket-child-stacks-01.s3.ap-south-1.amazonaws.com/security-stack.yml
+      Parameters:
+        VpcIdFromNetwork: !GetAtt NetworkStack.Outputs.VpcIdOutput
+        HttpPort: !Ref InputHttpPort
+        SshPort: !Ref InputSshPort

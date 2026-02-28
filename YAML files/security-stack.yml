@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Security stack for creating security groups
+
+Parameters:
+
+  VpcIdFromNetwork:
+    Type: String
+    Description: VPC ID received from network stack
+
+  HttpPort:
+    Type: Number
+    Default: 80
+
+  SshPort:
+    Type: Number
+    Default: 22
+
+
+Resources:
+
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow HTTP and SSH from anywhere
+      VpcId: !Ref VpcIdFromNetwork
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref HttpPort
+          ToPort: !Ref HttpPort
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: !Ref SshPort
+          ToPort: !Ref SshPort
+          CidrIp: 0.0.0.0/0
+
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow traffic only from load balancer
+      VpcId: !Ref VpcIdFromNetwork
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref HttpPort
+          ToPort: !Ref HttpPort
+          SourceSecurityGroupId: !Ref LoadBalancerSecurityGroup

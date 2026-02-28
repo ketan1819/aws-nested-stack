@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Network stack for creating VPC and subnets
+
+Parameters:
+
+  VpcCidrBlock:
+    Type: String
+    Default: 10.0.0.0/16
+    Description: CIDR block for VPC
+
+  PubSubnet1Cidr:
+    Type: String
+    Default: 10.0.1.0/24
+
+  PubSubnet2Cidr:
+    Type: String
+    Default: 10.0.2.0/24
+
+  PvtSubnet1Cidr:
+    Type: String
+    Default: 10.0.3.0/24
+
+  PvtSubnet2Cidr:
+    Type: String
+    Default: 10.0.4.0/24
+
+
+Resources:
+
+  MainVpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCidrBlock
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: PracticalVpc
+
+  VpcInternetGateway:
+    Type: AWS::EC2::InternetGateway
+
+  AttachIgwToVpc:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref MainVpc
+      InternetGatewayId: !Ref VpcInternetGateway
+
+  PublicSubnetOne:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainVpc
+      CidrBlock: !Ref PubSubnet1Cidr
+      MapPublicIpOnLaunch: true
+      AvailabilityZone: !Select [0, !GetAZs '']
+
+  PublicSubnetTwo:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainVpc
+      CidrBlock: !Ref PubSubnet2Cidr
+      MapPublicIpOnLaunch: true
+      AvailabilityZone: !Select [1, !GetAZs '']
+
+  PrivateSubnetOne:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainVpc
+      CidrBlock: !Ref PvtSubnet1Cidr
+      AvailabilityZone: !Select [0, !GetAZs '']
+
+  PrivateSubnetTwo:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref MainVpc
+      CidrBlock: !Ref PvtSubnet2Cidr
+      AvailabilityZone: !Select [1, !GetAZs '']
+
+
+Outputs:
+
+  VpcIdOutput:
+    Description: ID of created VPC
+    Value: !Ref MainVpc
+    Export:
+      Name: PracticalVpcId
+
+  PublicSubnetOneId:
+    Value: !Ref PublicSubnetOne
+    Export:
+      Name: PracticalPublicSubnet1
+
+  PublicSubnetTwoId:
+    Value: !Ref PublicSubnetTwo
+    Export:
+      Name: PracticalPublicSubnet2
+
+  PrivateSubnetOneId:
+    Value: !Ref PrivateSubnetOne
+    Export:
+      Name: PracticalPrivateSubnet1
+
+  PrivateSubnetTwoId:
+    Value: !Ref PrivateSubnetTwo
+    Export:
+      Name: PracticalPrivateSubnet2
