@@ -34,7 +34,9 @@ Root Stack
 - Exported VPC ID and Subnet IDs using Outputs
 
 📷 Screenshot:
-![Step 1](screenshots/1.png)
+![netowork stack](ScreenShots/1.png)
+![netowork stack](ScreenShots/2.png)
+
 
 ---
 
@@ -47,7 +49,9 @@ Root Stack
 - Accepted VPC ID as parameter
 
 📷 Screenshot:
-(Add screenshot of security.yaml template here)
+![security stack](ScreenShots/3.png)
+![security stack](ScreenShots/4.png)
+
 
 ---
 
@@ -57,7 +61,9 @@ Root Stack
 - Copied object URLs
 
 📷 Screenshot:
-(Add screenshot of S3 bucket with uploaded files)
+![Creating bucket](ScreenShots/5.png)
+![](ScreenShots/6.png)
+
 
 ---
 
@@ -68,7 +74,8 @@ Root Stack
 - Used DependsOn for proper stack creation order
 
 📷 Screenshot:
-(Add screenshot of root.yaml template)
+![](ScreenShots/7.png)
+
 
 ---
 
@@ -82,7 +89,11 @@ Root Stack
 - Created stack
 
 📷 Screenshot:
-(Add screenshot of parameter input page)
+![](ScreenShots/8.png)
+![](ScreenShots/9.png)
+![](ScreenShots/10.png)
+![](ScreenShots/11.png)
+![](ScreenShots/12.png)
 
 ---
 
@@ -93,7 +104,11 @@ Root Stack
 - Confirmed successful stack creation
 
 📷 Screenshot:
-(Add screenshot of CloudFormation stack resources tab)
+![](ScreenShots/13.png)
+![](ScreenShots/14.png)
+![](ScreenShots/15.png)
+![](ScreenShots/16.png)
+![](ScreenShots/17.png)
 
 ---
 
@@ -102,7 +117,8 @@ Root Stack
 - Confirmed all nested resources were deleted automatically
 
 📷 Screenshot:
-(Add screenshot showing stack deletion complete)
+![](ScreenShots/18.png)
+![](ScreenShots/19.png)
 
 ---
 
